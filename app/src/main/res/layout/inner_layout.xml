@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    >
+
+  <LinearLayout
+      android:id="@+id/date_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/current_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_5"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/secondary_text_size"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/current_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_5"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/primary_text_size"
+        />
+
+  </LinearLayout>
+
+  <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/current_temp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_margin="@dimen/margin_5"
+      android:paddingEnd="@dimen/margin_20"
+      android:paddingRight="@dimen/margin_20"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/header_text_size"
+      />
+
+  <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/overall_temp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/date_layout"
+      android:layout_margin="@dimen/margin_5"
+      android:gravity="center"
+      android:paddingTop="@dimen/margin_20"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/primary_text_size"
+      />
+  <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/overall_temp"
+      android:layout_margin="@dimen/margin_5"
+      android:gravity="center"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/primary_text_size"
+      />
+
+</RelativeLayout>

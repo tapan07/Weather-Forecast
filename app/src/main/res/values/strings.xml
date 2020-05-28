@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Weather Forecast</string>
+
+  <string name="unknown_error">We are unable to proceed now.</string>
+  <string name="msg_loading">Loading…</string>
+  <string name="msg_network_error">Please Check Your Internet Connection.</string>
+</resources>
