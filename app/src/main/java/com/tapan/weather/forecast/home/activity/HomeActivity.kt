@@ -8,7 +8,6 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
@@ -33,16 +32,16 @@ import com.tapan.weather.forecast.home.view.HomeView
 
 class HomeActivity : BaseActivity(), HomeView {
 
-  private var txtDisplayData: TextView? = null
-  private var txtCurrentTime: AppCompatTextView? = null
-  private var txtTemperature: AppCompatTextView? = null
-  private var txtOverallTemperature: AppCompatTextView? = null
-  private var txtDescription: AppCompatTextView? = null
-  private var mHomePresenter: HomePresenter<HomeView>? = null
-  private var fusedLocationClient: FusedLocationProviderClient? = null
-  private var addressResultReceiver: LocationAddressResultReceiver? = null
-  private var currentLocation: Location? = null
-  private var locationCallback: LocationCallback? = null
+  private lateinit var txtDisplayData: TextView
+  private lateinit var txtCurrentTime: AppCompatTextView
+  private lateinit var txtTemperature: AppCompatTextView
+  private lateinit var txtOverallTemperature: AppCompatTextView
+  private lateinit var txtDescription: AppCompatTextView
+  private lateinit var mHomePresenter: HomePresenter<HomeView>
+  private lateinit var fusedLocationClient: FusedLocationProviderClient
+  private lateinit var addressResultReceiver: LocationAddressResultReceiver
+  private lateinit var currentLocation: Location
+  private lateinit var locationCallback: LocationCallback
   override var currentLatitude = 0.0
     private set
   override var currentLongitude = 0.0
@@ -61,7 +60,7 @@ class HomeActivity : BaseActivity(), HomeView {
 
   private fun initiateData() {
     mHomePresenter = HomePresenter()
-    mHomePresenter!!.onAttach(this)
+    mHomePresenter.onAttach(this)
   }
 
   override fun layoutResource(): Int {
@@ -106,7 +105,7 @@ class HomeActivity : BaseActivity(), HomeView {
       locationRequest.interval = 120 * 60 * 1000.toLong()
       locationRequest.fastestInterval = 60000
       locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-      fusedLocationClient!!.requestLocationUpdates(
+      fusedLocationClient.requestLocationUpdates(
           locationRequest,
           locationCallback,
           null
@@ -128,20 +127,19 @@ class HomeActivity : BaseActivity(), HomeView {
     }
 
   override fun updateWeatherDetails(response: GeoLocation) {
-    txtCurrentTime!!.text = getTodayDate(CoreConstants.DATE_FORMAT)
-    txtTemperature!!.text = response.temperature
-    txtOverallTemperature!!.text = response.overAllTemperature
-    txtDescription!!.text = response.description
+    txtCurrentTime.text = getTodayDate(CoreConstants.DATE_FORMAT)
+    txtTemperature.text = response.temperature
+    txtOverallTemperature.text = response.overAllTemperature
+    txtDescription.text = response.description
   }
 
   override val locationDB: GeoLocationDatabase?
     get() = GeoLocationDatabase.getInstance(context = this)
 
   private fun showResults(geoCodeDetails: GeoCodeModel?) {
-    txtDisplayData!!.text = (geoCodeDetails?.locality + """
-        """ + geoCodeDetails?.state + """
-        """ + geoCodeDetails?.country + """
-        """).trimIndent()
+    txtDisplayData.text = (geoCodeDetails?.locality + "\n" +
+        geoCodeDetails?.state + "\n" +
+        geoCodeDetails?.country).trimIndent()
     currentLatitude = CoreConstants.decimalFormat.format(
         geoCodeDetails?.latitude
     )
@@ -150,7 +148,7 @@ class HomeActivity : BaseActivity(), HomeView {
         geoCodeDetails?.longitude
     )
         .toDouble()
-    mHomePresenter!!.getWeatherContent(currentLatitude, currentLongitude)
+    mHomePresenter.getWeatherContent(currentLatitude, currentLongitude)
   }
 
   override fun onResume() {
@@ -160,7 +158,7 @@ class HomeActivity : BaseActivity(), HomeView {
 
   override fun onPause() {
     super.onPause()
-    fusedLocationClient!!.removeLocationUpdates(locationCallback)
+    fusedLocationClient.removeLocationUpdates(locationCallback)
   }
 
   override fun onBackPressed() {
@@ -175,11 +173,6 @@ class HomeActivity : BaseActivity(), HomeView {
       resultData: Bundle
     ) {
       if (resultCode == 0) {
-        //Last Location can be null for various reasons
-        //for example the api is called first time
-        //so retry till location is set
-        //since intent service runs on background thread, it doesn't block main thread
-        Log.d("Address", "Location null retrying")
         address
       }
       if (resultCode == 1) {
